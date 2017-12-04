@@ -28,6 +28,7 @@ func partTwo(input []byte) int {
 		words := strings.Split(passphrase, " ")
 		valid := true
 
+	Loop:
 		for i := 0; i < len(words)-1; i++ {
 			for j := i + 1; j < len(words); j++ {
 				if len(words[i]) == len(words[j]) {
@@ -38,7 +39,7 @@ func partTwo(input []byte) int {
 
 					if string(b1) == string(b2) {
 						valid = false
-						break
+						break Loop
 					}
 				}
 			}
