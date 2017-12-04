@@ -59,6 +59,7 @@ func partOne(input []byte) int {
 		for _, word := range strings.Split(passphrase, " ") {
 			if words[word] {
 				valid = false
+				break
 			} else {
 				words[word] = true
 			}
