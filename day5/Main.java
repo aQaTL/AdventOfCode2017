@@ -15,12 +15,9 @@ public class Main {
 		int idx = 0;
 		int steps = 0;
 		
-		for (;idx < offsets.length;) {
-			int prev = idx;
-			int off = offsets[idx];
+		for (;idx < offsets.length && idx >= 0;) {
+			idx += offsets[idx]++;
 			steps++;
-			idx += off;
-			offsets[prev] += 1;
 		}
 		return steps;
 	}
@@ -29,7 +26,7 @@ public class Main {
 		int idx = 0;
 		int steps = 0;
 		
-		for (;idx < offsets.length;) {
+		for (;idx < offsets.length && idx >= 0;) {
 			int prev = idx;
 			int off = offsets[idx];
 			steps++;
