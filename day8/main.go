@@ -16,7 +16,7 @@ func main() {
 
 	registers := make(map[string]int)
 
-	maxEver := -(1 << 31)
+	maxEver := 0
 
 	for _, line := range input {
 		instr := strings.Split(line, " ")
