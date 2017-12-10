@@ -39,11 +39,10 @@ func partTwo(input []byte) string {
 
 	hash := make([]byte, 16)
 	for i := 0; i < 16; i++ {
-		res := byte(list[i*16])
+		hash[i] = byte(list[i*16])
 		for j := i*16 + 1; j < i*16+16; j++ {
-			res ^= byte(list[j])
+			hash[i] ^= byte(list[j])
 		}
-		hash[i] = res
 	}
 
 	return hex.EncodeToString(hash)
