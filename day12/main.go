@@ -25,7 +25,7 @@ func main() {
 
 func partOne(input []string) int {
 	progs := make(map[string]interface{})
-	buildGroup("0", &input, &progs)
+	buildGroup("0", input, progs)
 	return len(progs)
 }
 
@@ -36,7 +36,7 @@ func partTwo(input []string) int {
 	for _, line := range input {
 		pipes := strings.Split(line, " ")
 		if _, seen := progs[pipes[0]]; !seen {
-			buildGroup(pipes[0], &input, &progs)
+			buildGroup(pipes[0], input, progs)
 			groups++
 		}
 	}
@@ -44,14 +44,14 @@ func partTwo(input []string) int {
 	return groups
 }
 
-func buildGroup(root string, input *[]string, progs *map[string]interface{}) {
-	for _, line := range *input {
+func buildGroup(root string, input []string, progs map[string]interface{}) {
+	for _, line := range input {
 		program := strings.Split(line, " ")
 		if program[0] == root {
-			if _, seen := (*progs)[root]; seen {
+			if _, seen := progs[root]; seen {
 				return
 			}
-			(*progs)[root] = *new(interface{})
+			progs[root] = *new(interface{})
 			
 			for _, pipe := range program[1:] {
 				buildGroup(pipe, input, progs)
