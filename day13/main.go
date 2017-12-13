@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"strconv"
 	"strings"
 )
 
@@ -13,56 +14,46 @@ func main() {
 	}
 	input := strings.Split(string(data), "\n")
 
-	severity := partOne(input)
-	fmt.Println(severity)
+	layers := make([]layer, len(input))
+	for i, line := range input {
+		words := strings.Split(line, ": ")
+		depth, _ := strconv.Atoi(words[0])
+		size, _ := strconv.Atoi(words[1])
+		layers[i] = layer{uint64(depth), uint64(size)}
+	}
 
-	delay := partTwo(input)
-	fmt.Println(delay)
+	fmt.Printf("%d\n%d\n",
+		partOne(layers),
+		partTwo(layers))
 }
 
-func partTwo(input []string) int {
-	gotCaught := true
-	delay := 0
-	for gotCaught {
-		gotCaught = false
-		for _, line := range input {
-			depth, layerRange := 0, 0
-			fmt.Sscanf(line, "%d: %d", &depth, &layerRange)
-
-			pos := calcScannerPos(depth+delay, layerRange)
-			if pos == 0 {
-				gotCaught = true
+func partTwo(layers []layer) uint64 {
+loop:
+	for delay := uint64(0); ; delay++ {
+		for _, l := range layers {
+			if isSpottedByScanner(delay, l) {
+				continue loop
 			}
 		}
-		if !gotCaught {
-			break
-		}
-		delay++
+		return delay
 	}
-	return delay
 }
 
-func partOne(input []string) int {
-	severity := 0
-	for _, line := range input {
-		depth, layerRange := 0, 0
-		fmt.Sscanf(line, "%d: %d", &depth, &layerRange)
+type layer struct {
+	depth uint64
+	size  uint64
+}
 
-		if calcScannerPos(depth, layerRange) == 0 {
-			severity += depth * layerRange
+func isSpottedByScanner(delay uint64, l layer) bool {
+	return (l.depth+delay)%((l.size-1)*2) == 0
+}
+
+func partOne(layers []layer) uint64 {
+	var severity uint64
+	for _, l := range layers {
+		if isSpottedByScanner(0, l) {
+			severity += l.depth * l.size
 		}
 	}
 	return severity
-}
-
-func calcScannerPos(depth, layerRange int) int {
-	forward := 1
-	pos := 0
-	for i := 0; i < depth; i++ {
-		pos += forward
-		if pos == layerRange-1 || pos == 0 {
-			forward *= -1
-		}
-	}
-	return pos
 }
