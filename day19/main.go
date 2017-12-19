@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"strings"
+	"unicode"
 )
 
 func main() {
@@ -26,19 +27,19 @@ func main() {
 		p.Move()
 		if c, ok := diag.GetByPoint(*p); !ok {
 			break
-		} else if c >= 65 && c <= 90 {
+		} else if unicode.IsLetter(c) {
 			steps++
 			letters = append(letters, c)
 		} else if c == '+' {
 			steps++
 			if p.direction == up || p.direction == down {
-				if c, ok := diag.Get(p.y, p.x+1); ok && (c == '-' || (c >= 65 && c <= 90)) {
+				if c, ok := diag.Get(p.y, p.x+1); ok && (c == '-' || unicode.IsLetter(c)) {
 					p.direction = right
 				} else {
 					p.direction = left
 				}
 			} else {
-				if c, ok := diag.Get(p.y+1, p.x); ok && (c == '|' || (c >= 65 && c <= 90)) {
+				if c, ok := diag.Get(p.y+1, p.x); ok && (c == '|' || unicode.IsLetter(c)) {
 					p.direction = down
 				} else {
 					p.direction = up
