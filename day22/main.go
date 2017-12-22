@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"math"
 	"strings"
 )
 
@@ -37,7 +36,7 @@ func main() {
 func partOne(grid Square, sideSize int) int {
 	bursts, infectedFlags := 10000, 0
 
-	center := int(math.Ceil(float64(sideSize / 2)))
+	center := sideSize / 2
 	p := Point{center, center, up}
 
 	for i := 0; i < bursts; i++ {
@@ -63,7 +62,7 @@ func partOne(grid Square, sideSize int) int {
 func partTwo(grid Square, sideSize int) int {
 	bursts, infectedFlags := 10000000, 0
 
-	center := int(math.Ceil(float64(sideSize / 2)))
+	center := sideSize / 2
 	p := Point{center, center, up}
 
 	for i := 0; i < bursts; i++ {
